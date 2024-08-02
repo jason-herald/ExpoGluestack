@@ -1,70 +1,165 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { StyleSheet } from "react-native";
+import { Box } from "@/components/ui/box";
+import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
+import { ScrollView } from "@/components/ui/scroll-view";
+import { Image } from "@/components/ui/image";
+import { Button, ButtonText } from "@/components/ui/button";
+import { Input, InputField } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  CircleIcon,
+} from "@/components/ui/icon";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionContentText,
+  AccordionHeader,
+  AccordionIcon,
+  AccordionItem,
+  AccordionTitleText,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Divider } from "@/components/ui/divider";
+import React from "react";
+import { Actionsheet, ActionsheetBackdrop, ActionsheetContent, ActionsheetDragIndicatorWrapper, ActionsheetDragIndicator, ActionsheetItem, ActionsheetItemText } from "@/components/ui/actionsheet";
 
 export default function HomeScreen() {
+  const [showActionsheet, setShowActionsheet] = React.useState(false)
+  const handleClose = () => setShowActionsheet(false)
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
+    <ScrollView>
+      <Box className="bg-blue-400 dark:bg-blue-900">
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
+          size="2xl"
+          source={require("@/assets/images/partial-react-logo.png")}
+          alt="React Logo"
           style={styles.reactLogo}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      </Box>
+      <VStack className="p-6 space-y-4">
+        <Text size="2xl" bold>
+          Welcome to GlueStack Demo!
+        </Text>
+
+        <VStack className="mt-4 space-y-2">
+          <Accordion
+            size="md"
+            variant="filled"
+            type="single"
+            isCollapsible={true}
+            isDisabled={false}
+            className="m-5 w-[90%] border border-outline-200"
+          >
+            <AccordionItem value="a">
+              <AccordionHeader>
+                <AccordionTrigger>
+                  {({ isExpanded }) => {
+                    return (
+                      <>
+                        <AccordionTitleText>
+                          How do I place an order?
+                        </AccordionTitleText>
+                        {isExpanded ? (
+                          <AccordionIcon as={ChevronUpIcon} className="ml-3" />
+                        ) : (
+                          <AccordionIcon
+                            as={ChevronDownIcon}
+                            className="ml-3"
+                          />
+                        )}
+                      </>
+                    );
+                  }}
+                </AccordionTrigger>
+              </AccordionHeader>
+              <AccordionContent>
+                <AccordionContentText>
+                  To place an order, simply select the products you want,
+                  proceed to checkout, provide shipping and payment information,
+                  and finalize your purchase.
+                </AccordionContentText>
+              </AccordionContent>
+            </AccordionItem>
+            <Divider />
+            <AccordionItem value="b">
+              <AccordionHeader>
+                <AccordionTrigger>
+                  {({ isExpanded }) => {
+                    return (
+                      <>
+                        <AccordionTitleText>
+                          What payment methods do you accept?
+                        </AccordionTitleText>
+                        {isExpanded ? (
+                          <AccordionIcon as={ChevronUpIcon} className="ml-3" />
+                        ) : (
+                          <AccordionIcon
+                            as={ChevronDownIcon}
+                            className="ml-3"
+                          />
+                        )}
+                      </>
+                    );
+                  }}
+                </AccordionTrigger>
+              </AccordionHeader>
+              <AccordionContent>
+                <AccordionContentText>
+                  We accept all major credit cards, including Visa, Mastercard,
+                  and American Express. We also support payments through PayPal.
+                </AccordionContentText>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
+          <Text size="lg" bold>
+            Toggle Switch
+          </Text>
+          <Switch aria-label="ff"/>
+        </VStack>
+        <VStack className="mt-4 space-y-2">
+        </VStack>
+        <Button onPress={() => setShowActionsheet(true)}>
+        <ButtonText>Open Actionsheet</ButtonText>
+      </Button>
+      <Actionsheet isOpen={showActionsheet} onClose={handleClose}>
+        <ActionsheetBackdrop />
+        <ActionsheetContent>
+          <ActionsheetDragIndicatorWrapper>
+            <ActionsheetDragIndicator />
+          </ActionsheetDragIndicatorWrapper>
+          <ActionsheetItem onPress={handleClose}>
+            <ActionsheetItemText>Edit Message</ActionsheetItemText>
+          </ActionsheetItem>
+          <ActionsheetItem onPress={handleClose}>
+            <ActionsheetItemText>Mark Unread</ActionsheetItemText>
+          </ActionsheetItem>
+          <ActionsheetItem onPress={handleClose}>
+            <ActionsheetItemText>Remind Me</ActionsheetItemText>
+          </ActionsheetItem>
+          <ActionsheetItem onPress={handleClose}>
+            <ActionsheetItemText>Add to Saved Items</ActionsheetItemText>
+          </ActionsheetItem>
+          <ActionsheetItem isDisabled onPress={handleClose}>
+            <ActionsheetItemText>Delete</ActionsheetItemText>
+          </ActionsheetItem>
+        </ActionsheetContent>
+      </Actionsheet>
+      </VStack>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
   reactLogo: {
     height: 178,
     width: 290,
+    position: "absolute",
     bottom: 0,
     left: 0,
-    position: 'absolute',
   },
 });
